@@ -64,14 +64,17 @@ class App extends Component {
         className="list-group-item d-flex justify-content-between align-items-center"
       >
         <span
-          className={`todo-title mr-2 ${
+          className={`todo-title text-left ${
             this.state.viewCompleted ? "completed-todo" : ""
           }`}
           title={item.description}
         >
           {item.title}
         </span>
-        <span>
+        <span className="text-center">
+          {item.description}
+        </span>
+        <span className="col-2 float-right">
           <button
             onClick={() => this.editItem(item)}
             className="btn btn-secondary mr-2"
@@ -98,21 +101,21 @@ class App extends Component {
     this.toggle();
     if (item.id) {
       axios
-        .put(`/api/todos/${item.id}/`, item)
+        .put(`http://localhost:8000/api/todos/${item.id}/`, item)
         .then(res => this.refreshList());
       return;
     }
     axios
-      .post("/api/todos/", item)
+      .post("http://localhost:8000/api/todos/", item)
       .then(res => this.refreshList());
   };
 
   handleDelete = item => {
     axios
-      .delete(`/api/todos/${item.id}`)
+      .delete(`http://localhost:8000/api/todos/${item.id}`)
       .then(res => this.refreshList());
   };
-
+  
   createItem = () => {
     const item = { title: "", description: "", completed: false };
     this.setState({ activeItem: item, modal: !this.state.modal });
@@ -121,7 +124,7 @@ class App extends Component {
   editItem = item => {
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
-  
+
   render() {
     return (
       <main className="content">
